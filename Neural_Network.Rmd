@@ -69,9 +69,9 @@ nnmodel <- neuralnet(Admit~ CGPA+GRE+SOP,
                      rep=5,
                      lifesign = "full",
                      linear.output = FALSE)  # Neural Network Model
-# Predicting test data. 
-pred_clannts <-predict(nnmodel, tsdata,rep=3) 
-pred_clannts <-predict(nnmodel, tsdata,which.min(nnmodel$result.matrix[1, ]))
+# Predicting test data.
+best1 <- which.min(nnmodel$result.matrix["error", ])
+pred_clannts <- predict(nnmodel, tsdata, rep = best1)
 ```
 ```{r}
 # Gives predicted probabilities and others
@@ -121,9 +121,9 @@ nnmodel2 <- neuralnet(Admit~ CGPA+GRE+SOP,
                      rep=5,
                      lifesign = "full",
                      linear.output = FALSE)  # Neural Network Model
-# Predicting training data. 
-pred_clannts2 <-predict(nnmodel2, tsdata,rep=5) 
-pred_clannts2 <-predict(nnmodel2, tsdata,which.min(nnmodel$result.matrix[1, ]))
+# Predicting training data.
+best2 <- which.min(nnmodel2$result.matrix["error", ])
+pred_clannts2 <- predict(nnmodel2, tsdata, rep = best2)
 ```
 
 ```{r}
@@ -134,7 +134,7 @@ head(tsdata[1:6,])  # shows the first 6  rows of the test data
 ### Part II vii) ###
 pred_classnnts2 <- ifelse(pred_clannts2>0.5,1,0) # Assigning probabilities to classes
 conf_clannts2<-table(Predicted=pred_classnnts2,Actual=tsdata$Admit) # confusion matrix from nnmodel
-conf_clannts  # confusion Matrix from nn model
+conf_clannts2  # confusion Matrix from nn model
 
 ### Overall accuracy and misclasification in the test data  
 ts_oacc2 <- sum(diag(conf_clannts2))/sum(conf_clannts2)  # Overall accuracy
@@ -149,13 +149,13 @@ specificity2 <- conf_clannts2[1, 1] / sum(conf_clannts2[1, ])
 specificity2
 ```
 
-  Overall Accuracy .85
-  
-  Misclassification .15
-  
-  Sensitivity .851
-  
-  specificity .846
+  Overall Accuracy .8625
+
+  Misclassification .1375
+
+  Sensitivity .864
+
+  specificity .857
 
 ```{r}
 plot(nnmodel2,"best")
@@ -172,9 +172,9 @@ nnmodel3 <- neuralnet(Admit~ CGPA+GRE+SOP,
                      rep=5,
                      lifesign = "full",
                      linear.output = FALSE)  # Neural Network Model
-# Predicting test data. 
-pred_clannts3 <-predict(nnmodel3, tsdata,rep=5) 
-pred_clannts3 <-predict(nnmodel3, tsdata,which.min(nnmodel$result.matrix[1, ]))
+# Predicting test data.
+best3 <- which.min(nnmodel3$result.matrix["error", ])
+pred_clannts3 <- predict(nnmodel3, tsdata, rep = best3)
 ```
 
 
@@ -186,7 +186,7 @@ head(tsdata[1:6,])  # shows the first 6  rows of the test data
 ### Part II vii) ###
 pred_classnnts3 <- ifelse(pred_clannts3>0.5,1,0) # Assigning probabilities to classes
 conf_clannts3<-table(Predicted=pred_classnnts3,Actual=tsdata$Admit) # confusion matrix from nnmodel
-conf_clannts  # confusion Matrix from nn model
+conf_clannts3  # confusion Matrix from nn model
 
 ### Overall accuracy and misclasification in the test data  
 ts_oacc3 <- sum(diag(conf_clannts3))/sum(conf_clannts3)  # Overall accuracy
@@ -202,12 +202,12 @@ specificity3
 ```
 
 
-  Overall Accuracy .83
-  
-  Misclassification .16
-  
+  Overall Accuracy .8375
+
+  Misclassification .1625
+
   Sensitivity .838
-  
+
   specificity .833
 
 
