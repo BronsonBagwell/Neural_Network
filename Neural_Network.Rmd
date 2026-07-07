@@ -87,21 +87,21 @@ ts_oacc <- sum(diag(conf_clannts))/sum(conf_clannts)  # Overall accuracy
 ts_oacc  # test overall accuracy
 1-ts_oacc # test misclasification
 
- #Sensitivity
-sensitivity <- conf_clannts[2, 2] / sum(conf_clannts[2, ])
-sensitivity
-#Specificty
-specificity <- conf_clannts[1, 1] / sum(conf_clannts[1, ])
-specificity
+# Sensitivity and Specificity via caret
+cm <- caret::confusionMatrix(factor(pred_classnnts, levels = c(0, 1)),
+                             factor(tsdata$Admit, levels = c(0, 1)),
+                             positive = "1")
+cm$byClass["Sensitivity"]
+cm$byClass["Specificity"]
 ```
 
   Overall Accuracy .85
   
   Misclassification .15
   
-  Sensitivity .851
-  
-  specificity .846
+  Sensitivity .966
+
+  specificity .524
 
 # 7. Plot the nn model found in the previous question.
 
@@ -141,21 +141,21 @@ ts_oacc2 <- sum(diag(conf_clannts2))/sum(conf_clannts2)  # Overall accuracy
 ts_oacc2  # test overall accuracy
 1-ts_oacc2 # test misclasification
 
- #Sensitivity
-sensitivity2 <- conf_clannts2[2, 2] / sum(conf_clannts2[2, ])
-sensitivity2
-#Specificty
-specificity2 <- conf_clannts2[1, 1] / sum(conf_clannts2[1, ])
-specificity2
+# Sensitivity and Specificity via caret
+cm2 <- caret::confusionMatrix(factor(pred_classnnts2, levels = c(0, 1)),
+                              factor(tsdata$Admit, levels = c(0, 1)),
+                              positive = "1")
+cm2$byClass["Sensitivity"]
+cm2$byClass["Specificity"]
 ```
 
   Overall Accuracy .8625
 
   Misclassification .1375
 
-  Sensitivity .864
+  Sensitivity .966
 
-  specificity .857
+  specificity .571
 
 ```{r}
 plot(nnmodel2,"best")
@@ -193,12 +193,12 @@ ts_oacc3 <- sum(diag(conf_clannts3))/sum(conf_clannts3)  # Overall accuracy
 ts_oacc3  # test overall accuracy
 1-ts_oacc3 # test misclasification
 
- #Sensitivity
-sensitivity3 <- conf_clannts3[2, 2] / sum(conf_clannts3[2, ])
-sensitivity3
-#Specificty
-specificity3 <- conf_clannts3[1, 1] / sum(conf_clannts3[1, ])
-specificity3
+# Sensitivity and Specificity via caret
+cm3 <- caret::confusionMatrix(factor(pred_classnnts3, levels = c(0, 1)),
+                              factor(tsdata$Admit, levels = c(0, 1)),
+                              positive = "1")
+cm3$byClass["Sensitivity"]
+cm3$byClass["Specificity"]
 ```
 
 
@@ -206,9 +206,9 @@ specificity3
 
   Misclassification .1625
 
-  Sensitivity .838
+  Sensitivity .966
 
-  specificity .833
+  specificity .476
 
 
 ```{r}
@@ -218,15 +218,15 @@ plot(nnmodel3,"best")
 # 9. The same data was used to predict Admit in Compare the test misclassification error from the decision tree, Random Forest, Random Forest-Bagging, the logistic model and neural network model. Which model is best? 
 
   Decision Tree .1375
-  
-  Random Forest .1375
-  
-  Random Forest-Bagging .125
-  
+
+  Random Forest .15
+
+  Random Forest-Bagging .1375
+
   Logistic Model .1125
-  
-  Neural Network .15
-  
+
+  Neural Network (2 hidden units) .1375
+
   Best is still the Logistic Model
 
 # 10.
