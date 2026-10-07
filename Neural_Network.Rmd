@@ -22,7 +22,7 @@ names(data)
 
 # 2. Do we need to convert the categorical variables into factors? Why or why not?
 
-  We don't need to convert categorical variables into factors because neural networks can work with both qualitative and quantitative variables. However, it's essential to normalize the quantitative variables.
+  We don't convert any variables into factors because a neural network needs numeric inputs. Every column is kept numeric, and it's essential to normalize the variables so they are on the same scale.
   
 # 3. Prepare the data by using the Max-Min normalization method
 
@@ -41,7 +41,7 @@ summary(normdata)
 
 ```{r}
 set.seed(7332.01)
-Index <- createDataPartition(normdata$Admit,p=0.8,list=FALSE)
+Index <- createDataPartition(as.factor(normdata$Admit),p=0.8,list=FALSE)
 trdata <- normdata[Index,]  # training data set 80%
 tsdata <- normdata[-Index,] # testing data set 20%
 head(trdata) # Gives the first 6 rows of the training data
@@ -95,13 +95,13 @@ cm$byClass["Sensitivity"]
 cm$byClass["Specificity"]
 ```
 
-  Overall Accuracy .85
+  Overall Accuracy .875
   
-  Misclassification .15
+  Misclassification .125
   
-  Sensitivity .966
+  Sensitivity .952
 
-  specificity .524
+  specificity .611
 
 # 7. Plot the nn model found in the previous question.
 
@@ -111,7 +111,7 @@ plot(nnmodel,"best")
 
 # 8. Attempt different parameters of the hidden layers (number of hidden layers and number of nodes). Report the model, plot, the overall accuracy, misclassification, sensitivity and specificity. Use set.seed(7332.01) for reproducibility
 
-Two Hidden Layers
+One Hidden Layer, Two Neurons
 
 ```{r}
 nnmodel2 <- neuralnet(Admit~ CGPA+GRE+SOP,
@@ -121,7 +121,7 @@ nnmodel2 <- neuralnet(Admit~ CGPA+GRE+SOP,
                      rep=5,
                      lifesign = "full",
                      linear.output = FALSE)  # Neural Network Model
-# Predicting training data.
+# Predicting test data.
 best2 <- which.min(nnmodel2$result.matrix["error", ])
 pred_clannts2 <- predict(nnmodel2, tsdata, rep = best2)
 ```
@@ -149,19 +149,19 @@ cm2$byClass["Sensitivity"]
 cm2$byClass["Specificity"]
 ```
 
-  Overall Accuracy .8625
+  Overall Accuracy .875
 
-  Misclassification .1375
+  Misclassification .125
 
-  Sensitivity .966
+  Sensitivity .952
 
-  specificity .571
+  specificity .611
 
 ```{r}
 plot(nnmodel2,"best")
 ```
 
-Three Hidden Layers
+One Hidden Layer, Three Neurons
 
 
 ```{r}
@@ -202,20 +202,20 @@ cm3$byClass["Specificity"]
 ```
 
 
-  Overall Accuracy .8375
+  Overall Accuracy .875
 
-  Misclassification .1625
+  Misclassification .125
 
-  Sensitivity .966
+  Sensitivity .935
 
-  specificity .476
+  specificity .667
 
 
 ```{r}
 plot(nnmodel3,"best")
 ```
 
-# 9. The same data was used to predict Admit in Compare the test misclassification error from the decision tree, Random Forest, Random Forest-Bagging, the logistic model and neural network model. Which model is best? 
+# 9. The same data and the same test set were used to predict Admit in the Classification_Model and Tree_Based_Models projects. Compare the test misclassification error from the decision tree, Random Forest, Random Forest-Bagging, the logistic model and neural network model. Which model is best? 
 
   Decision Tree .1375
 
@@ -225,9 +225,9 @@ plot(nnmodel3,"best")
 
   Logistic Model .1125
 
-  Neural Network (2 hidden units) .1375
+  Neural Network (1, 2 and 3 hidden neurons) .125
 
-  Best is still the Logistic Model
+  Best is still the Logistic Model, by one test observation (9 vs 10 errors out of 80)
 
 # 10.
 
